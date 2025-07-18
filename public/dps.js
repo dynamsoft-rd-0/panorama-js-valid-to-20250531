@@ -220,19 +220,19 @@ selBarcodeColor.addEventListener('change', async()=>{
 
 // For dynamsoft TST and developer, currently our templates are based on dbr10, please do not use dbr11 templates.
 const funcUpdateCvrSettings = async()=>{
-  let tpl = await fetch('template_cvr.json?v=20250711').then(r=>r.text());
+  let tpl = await fetch('template_cvr.json?v=20250718').then(r=>r.text());
 
-  
+
   //// If you have customized the template, please consider removing if/else code
   if('speed' === selSpeedCoverage.value){
     tpl = tpl
       .replace(/,\s*{\s*"Mode"\s*:\s*"LM_LINES"\s*}/, '')
-      .replace(/,\s*{\s*"Mode"\s*:\s*"DM_THRESHOLD_BINARIZATION"\s*}/, '')
-      .replace(/,\s*{\s*"Mode"\s*:\s*"DM_DIRECT_BINARIZATION"\s*}/, '')
-      .replace(/,\s*{\s*"Mode"\s*:\s*"DM_DEEP_ANALYSIS"\s*}/, '');
+      .replace(/,\s*{\s*"Mode"\s*:\s*"DM_DEEP_ANALYSIS"\s*}/, '')
+      ;
   }else if('balance' === selSpeedCoverage.value){
     tpl = tpl
-      .replace(/,\s*{\s*"Mode"\s*:\s*"DM_DEEP_ANALYSIS"\s*}/, '');
+      .replace(/,\s*{\s*"Mode"\s*:\s*"LM_LINES"\s*}/, '')
+      ;
   }
   if('1D' === selBarcodeFormat.value){
     tpl = tpl
