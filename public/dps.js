@@ -24,10 +24,11 @@ const preDebug = document.getElementById('pre-debug');
 const videoOverlayCtx = camera.addCanvas().getContext('2d');
 const resultCtx = document.getElementById('cvs-result').getContext('2d');
 
-//Dynamsoft.Core.CoreModule._bDebug = true;
+// Dynamsoft.Core.CoreModule._bDebug = true;
+// Dynamsoft.Core.CoreModule._onLog = console.log;
 // change assets name to disable cache
-Dynamsoft.Core.CoreModule.engineResourcePaths.rootDirectory = 'assets_2025-07-09/';
-console.log(Dynamsoft.Core.CoreModule.engineResourcePaths.rootDirectory);
+//Dynamsoft.Core.CoreModule.engineResourcePaths.rootDirectory = 'assets_2025-07-31/';
+//console.log(Dynamsoft.Core.CoreModule.engineResourcePaths.rootDirectory);
 
 let dpsInstanceID;
 const pInit = (async()=>{
@@ -220,33 +221,33 @@ selBarcodeColor.addEventListener('change', async()=>{
 
 // For dynamsoft TST and developer, currently our templates are based on dbr10, please do not use dbr11 templates.
 const funcUpdateCvrSettings = async()=>{
-  let tpl = await fetch('template_cvr.json?v=20250718').then(r=>r.text());
+  let tpl = await fetch('template_cvr.json?v=20250801.1').then(r=>r.text());
 
 
   //// If you have customized the template, please consider removing if/else code
   if('speed' === selSpeedCoverage.value){
     tpl = tpl
-      .replace(/,\s*{\s*"Mode"\s*:\s*"LM_LINES"\s*}/, '')
-      .replace(/,\s*{\s*"Mode"\s*:\s*"DM_DEEP_ANALYSIS"\s*}/, '')
+      .replace(/,\s*{\s*"Mode"\s*:\s*"LM_LINES"\s*}/g, '')
+      .replace(/,\s*{\s*"Mode"\s*:\s*"DM_DEEP_ANALYSIS"\s*}/g, '')
       ;
   }else if('balance' === selSpeedCoverage.value){
     tpl = tpl
-      .replace(/,\s*{\s*"Mode"\s*:\s*"LM_LINES"\s*}/, '')
+      .replace(/,\s*{\s*"Mode"\s*:\s*"LM_LINES"\s*}/g, '')
       ;
   }
   if('1D' === selBarcodeFormat.value){
     tpl = tpl
-      .replace(/,\s*"BarcodeFormatIds"\s*:\s*\[\s*"BF_ALL"\s*\]/, ',"BarcodeFormatIds":["BF_ONED"]');
+      .replace(/,\s*"BarcodeFormatIds"\s*:\s*\[\s*"BF_DEFAULT"\s*\]/g, ',"BarcodeFormatIds":["BF_ONED"]');
   }else if('2D' === selBarcodeFormat.value){
     tpl = tpl
-      .replace(/,\s*"BarcodeFormatIds"\s*:\s*\[\s*"BF_ALL"\s*\]/, ',"BarcodeFormatIds":["BF_MICRO_PDF417","BF_PDF417","BF_QR_CODE","BF_DATAMATRIX","BF_AZTEC","BF_MICRO_QR"]');
+      .replace(/,\s*"BarcodeFormatIds"\s*:\s*\[\s*"BF_DEFAULT"\s*\]/g, ',"BarcodeFormatIds":["BF_MICRO_PDF417","BF_PDF417","BF_QR_CODE","BF_DATAMATRIX","BF_AZTEC","BF_MICRO_QR"]');
   }
   if('normal' === selBarcodeColor.value){
     tpl = tpl
-      .replace(/,\s*{\s*"Mode"\s*:\s*"GTM_INVERTED"\s*}\s*/, '');
+      .replace(/,\s*{\s*"Mode"\s*:\s*"GTM_INVERTED"\s*}\s*/g, '');
   }else if('inverted' === selBarcodeColor.value){
     tpl = tpl
-      .replace(/{\s*"Mode"\s*:\s*"GTM_ORIGINAL"\s*}\s*,/, '');
+      .replace(/{\s*"Mode"\s*:\s*"GTM_ORIGINAL"\s*}\s*,/g, '');
   }
 
 
@@ -254,7 +255,7 @@ const funcUpdateCvrSettings = async()=>{
   await dps_initCVRSettings(dpsInstanceID, tpl);
 }
 const funcUpdatePanoramaSettings = async()=>{
-  let tpl = await fetch('template_panorama.json?v=20240628').then(r=>r.text());
+  let tpl = await fetch('template_panorama.json?v=20250801.1').then(r=>r.text());
 
 
   //// If you have customized the template, please consider removing if/else code
@@ -392,7 +393,7 @@ const dps_stitchImage = async(dpsInstanceID, camera)=>{
         height: frameCvs.height,
         stride: frameCvs.width*4,
         format: 10,
-        templateName: ''
+        templateName: 'default'
       },
       id: taskID,
     });
@@ -440,7 +441,7 @@ const dps_stitchImage4Milestone = async(dpsInstanceID)=>{
         height: 0,
         stride: 0,
         format: 0,
-        templateName: ''
+        templateName: 'default'
       },
       id: taskID,
     });

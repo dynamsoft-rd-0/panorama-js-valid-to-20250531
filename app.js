@@ -24,7 +24,11 @@ const collect = multer({ storage: multer.diskStorage({
         cb(null, dirCollect);
     },
     filename: (req, file, cb) => {
-        cb(null, Date.now()+'.png');
+        if(req.body.name){
+            cb(null, req.body.name);
+        }else{
+            cb(null, Date.now()+'.png');
+        }
     }
 }) });//dest: path.join(__dirname, 'public/collect')
 app.post('/collect', collect.any(), async(req, res) => {
@@ -50,11 +54,14 @@ app.use(express.static(path.join(__dirname, 'public'), {
             style-src-attr 'self' 'unsafe-inline';\
             style-src 'self' 'unsafe-inline';\
             font-src 'self' data:;\
-        ")
+        ");
         // === Only for eruda ===
         // font-src
         // script-src 'unsafe-inline'
         // https://opencollective.com/eruda/backers.svg
+
+        res.set('Cross-Origin-Opener-Policy', 'same-origin');
+        res.set('Cross-Origin-Embedder-Policy', 'require-corp');
     }
 }));
 

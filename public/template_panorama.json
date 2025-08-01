@@ -13,7 +13,7 @@
 				"BF_ALL"
 			],
 			"BarcodesOneLineStatus" : 0,
-			"CaptureVisionTemplateName" : "",
+			"CaptureVisionTemplateName" : "CVT_Default",
 			"DuplicationCorrectionOption" : 
 			{
 				"DuplicateBarcodeInterval" : 4,
